@@ -1,5 +1,7 @@
 package ru.safronov.library.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +20,25 @@ import ru.safronov.library.service.BookService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/book")
+@Tag(name = "Book")
 public class BookController {
 
   private final BookService bookService;
 
   @GetMapping
+  @Operation(summary = "get all books", description = "Загружает все книги в библиотеке")
   public ResponseEntity<List<Book>> getAllBooks() {
     return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
   }
 
   @GetMapping(path = "/{id}")
+  @Operation(summary = "get book by id", description = "Находит книгу по ее идентификатору")
   public ResponseEntity<Book> getBookInfo(@PathVariable Long id) {
     return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
   }
 
   @DeleteMapping(path = "/{id}")
+  @Operation(summary = "delete book", description = "Удаляет книгу из библиотеки")
   public ResponseEntity<List<Book>> deleteBook(@PathVariable Long id) {
     final List<Book> books;
     try {
@@ -44,6 +50,7 @@ public class BookController {
   }
 
   @PostMapping
+  @Operation(summary = "add book", description = "Добавляет новую книгу в библиотеку")
   public ResponseEntity<Book> createBook(@RequestParam String name) {
     Book book = bookService.addBook(name);
     return new ResponseEntity<>(book, HttpStatus.CREATED);
