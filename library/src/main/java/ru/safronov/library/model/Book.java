@@ -1,6 +1,7 @@
 package ru.safronov.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,14 +12,17 @@ import lombok.Data;
 @Table(name = "books")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Schema(name = "Книга")
 public class Book {
 
   private static long sequence = 1L;
 
   @Id
   @Column(name = "id")
+  @Schema(name = "Идеентификатор книги")
   private Long id;
   @Column(name = "name")
+  @Schema(name = "Название книги")
   private String name;
 
   public Book(String name) {

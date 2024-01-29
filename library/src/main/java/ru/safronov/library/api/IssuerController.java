@@ -1,5 +1,7 @@
 package ru.safronov.library.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +22,14 @@ import ru.safronov.library.service.IssuerService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/issue")
+@Tag(name = "Issue")
 public class IssuerController {
 
   private final IssuerService service;
 
   @PutMapping(path = "/{issueId}")
+  @Operation(summary = "return book", description = "Читатель возвращает книгу (заполняется поле returned_at)")
   public ResponseEntity<Issue> returnBook(@PathVariable long issueId) {
-    // найти в репозитории выдачу и проставить ей returned_at
     final Issue issue;
     try {
       issue = service.getIssue(issueId);
@@ -38,6 +41,7 @@ public class IssuerController {
   }
 
   @PostMapping
+  @Operation(summary = "issue book", description = "Составление записи о выдаче книги")
   public ResponseEntity<Issue> issueBook(@RequestBody IssueRequest request) {
     log.info("Получен запрос на выдачу: readerId = {}, bookId = {}", request.getReaderId(),
         request.getBookId());
@@ -53,6 +57,7 @@ public class IssuerController {
   }
 
   @GetMapping(path = "/{id}")
+  @Operation(summary = "get issue by id", description = "Получение информации о факте выдачи книги по ее идентификатору")
   public ResponseEntity<Issue> getIssueInfo(@PathVariable long id) {
     return new ResponseEntity<>(service.getIssue(id), HttpStatus.OK);
   }
