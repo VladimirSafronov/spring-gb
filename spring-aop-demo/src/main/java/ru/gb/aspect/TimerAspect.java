@@ -36,7 +36,7 @@ public class TimerAspect {
       log.info("Exception in timerAspect() {}", ex.getMessage());
     }
     final long finish = System.nanoTime();
-    log.info(joinPoint.getClass().getName() + " - " + joinPoint.getSignature().getName() + " #{}",
+    log.info(joinPoint.getTarget().getClass() + " - " + joinPoint.getSignature().getName() + " #{}",
         (finish - start) / 1_000_000_000);
     return returnValue;
   }
